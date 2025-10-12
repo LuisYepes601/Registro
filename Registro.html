@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Restaurante Gratitude</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h1>Registro - Restaurante Gratitude</h1>
+            <p>
+                Complete el formulario para crear su cuenta y disfrutar de nuestros
+                servicios
+            </p>
+        </div>
+
+        <div class="form-container">
+            <!-- Indicador de progreso -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="formProgress"></div>
+                </div>
+                <div class="progress-text" id="progressText">Paso 1 de 8</div>
+            </div>
+
+            <!-- Navegación por pestañas -->
+            <div class="form-nav">
+                <div class="nav-item active" data-target="personal">
+                    <span class="step-number">1</span>
+                    <i class="fas fa-user"></i> <span class="nav-text">Datos Personales</span>
+                </div>
+                <div class="nav-item" data-target="identificacion">
+                    <span class="step-number">2</span>
+                    <i class="fas fa-id-card"></i> <span class="nav-text">Identificación</span>
+                </div>
+                <div class="nav-item" data-target="demografica">
+                    <span class="step-number">3</span>
+                    <i class="fas fa-globe"></i> <span class="nav-text">Demográfica</span>
+                </div>
+                <div class="nav-item" data-target="contacto">
+                    <span class="step-number">4</span>
+                    <i class="fas fa-address-book"></i> <span class="nav-text">Contacto</span>
+                </div>
+                <div class="nav-item" data-target="direccion">
+                    <span class="step-number">5</span>
+                    <i class="fas fa-map-marker-alt"></i> <span class="nav-text">Dirección</span>
+                </div>
+                <div class="nav-item" data-target="cuenta">
+                    <span class="step-number">6</span>
+                    <i class="fas fa-key"></i> <span class="nav-text">Cuenta</span>
+                </div>
+                <div class="nav-item" data-target="laboral">
+                    <span class="step-number">7</span>
+                    <i class="fas fa-briefcase"></i> <span class="nav-text">Laboral</span>
+                </div>
+                <div class="nav-item" data-target="academica">
+                    <span class="step-number">8</span>
+                    <i class="fas fa-graduation-cap"></i> <span class="nav-text">Académica</span>
+                </div>
+            </div>
+
+            
+            <form id="registrationForm">
+                <!-- Datos Personales -->
+                <div class="form-section active" id="personal">
+                    <h2 class="section-title">
+                        <i class="fas fa-user"></i> Datos Personales
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="primerNombre" class="required">Primer Nombre</label>
+                            <input
+                                type="text"
+                                id="primerNombre"
+                                name="primerNombre"
+                                required
+                            />
+                            <div class="error-message" id="primerNombreError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="segundoNombre">Segundo Nombre</label>
+                            <input type="text" id="segundoNombre" name="segundoNombre" />
+                            <div class="checkbox-group">
+                                <input
+                                    type="checkbox"
+                                    id="noSegundoNombre"
+                                    name="noSegundoNombre"
+                                />
+                                <label for="noSegundoNombre">No tengo segundo nombre</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primerApellido" class="required">Primer Apellido</label>
+                            <input
+                                type="text"
+                                id="primerApellido"
+                                name="primerApellido"
+                                required
+                            />
+                            <div class="error-message" id="primerApellidoError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="segundoApellido" class="required">Segundo Apellido</label>
+                            <input
+                                type="text"
+                                id="segundoApellido"
+                                name="segundoApellido"
+                                required
+                            />
+                            <div class="error-message" id="segundoApellidoError">Este campo es obligatorio</div>
+                            <div class="checkbox-group">
+                                <input
+                                    type="checkbox"
+                                    id="noSegundoApellido"
+                                    name="noSegundoApellido"
+                                />
+                                <label for="noSegundoApellido">No tengo segundo apellido</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <div></div> <!-- Espaciador -->
+                        <button type="button" class="btn btn-next" data-next="identificacion" id="nextPersonal">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información de Identificación -->
+                <div class="form-section" id="identificacion">
+                    <h2 class="section-title">
+                        <i class="fas fa-id-card"></i> Información de Identificación
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="tipoIdentificacion" class="required">Tipo de Identificación</label>
+                            <select
+                                id="tipoIdentificacion"
+                                name="tipoIdentificacion"
+                                required
+                            >
+                                <option value="">Seleccione...</option>
+                                <option value="cedula">Cédula de Ciudadanía</option>
+                                <option value="tarjeta">Tarjeta de Identidad</option>
+                                <option value="pasaporte">Pasaporte</option>
+                                <option value="cedula_extranjeria">
+                                    Cédula de Extranjería
+                                </option>
+                            </select>
+                            <div class="error-message" id="tipoIdentificacionError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numeroIdentificacion" class="required">Número de Identificación</label>
+                            <input
+                                type="text"
+                                id="numeroIdentificacion"
+                                name="numeroIdentificacion"
+                                required
+                            />
+                            <div class="error-message" id="numeroIdentificacionError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fechaExpedicion" class="required">Fecha de Expedición</label>
+                            <input
+                                type="date"
+                                id="fechaExpedicion"
+                                name="fechaExpedicion"
+                                required
+                            />
+                            <div class="error-message" id="fechaExpedicionError">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="personal">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="demografica" id="nextIdentificacion">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información Demográfica -->
+                <div class="form-section" id="demografica">
+                    <h2 class="section-title">
+                        <i class="fas fa-globe"></i> Información Demográfica
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fechaNacimiento" class="required">Fecha de Nacimiento</label>
+                            <input
+                                type="date"
+                                id="fechaNacimiento"
+                                name="fechaNacimiento"
+                                required
+                            />
+                            <div class="error-message" id="fechaNacimientoError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="genero" class="required">Género</label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="No binario">No binario</option>
+                                <option value="Transgénero">Transgénero</option>
+                                <option value="otro">Otro</option>
+                                <option value="prefiero_no_decir">Prefiero no decir</option>
+                            </select>
+                            <div class="error-message" id="generoError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sexo" class="required">Sexo</label>
+                            <select id="sexo" name="sexo" required>
+                                <option value="">Seleccione...</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="I">Intersexual</option>
+                            </select>
+                            <div class="error-message" id="sexoError">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="identificacion">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="contacto" id="nextDemografica">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información de Contacto -->
+                <div class="form-section" id="contacto">
+                    <h2 class="section-title">
+                        <i class="fas fa-address-book"></i> Información de Contacto
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input
+                                type="tel"
+                                id="telefono"
+                                name="telefono"
+                                pattern="[0-9]{7,10}"
+                            />
+                            <p class="form-note">
+                                Formato: 7-10 dígitos sin espacios ni caracteres especiales
+                            </p>
+                            <div class="error-message" id="telefonoError">Formato incorrecto (7-10 dígitos)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="required">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" required />
+                            <div class="error-message" id="emailError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmEmail" class="required">Confirmar Correo Electrónico</label>
+                            <input
+                                type="email"
+                                id="confirmEmail"
+                                name="confirmEmail"
+                                required
+                            />
+                            <div class="error-message" id="confirmEmailError">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="demografica">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="direccion" id="nextContacto">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="form-section" id="direccion">
+                    <h2 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i> Dirección
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="departamento" class="required">Departamento</label>
+                            <select id="departamento" name="departamento" required>
+                                <option value="">Seleccione...</option>
+                                <option value="antioquia">Antioquia</option>
+                                <option value="cundinamarca">Cundinamarca</option>
+                                <option value="valle">Valle del Cauca</option>
+                                <option value="atlantico">Atlántico</option>
+                                <option value="bolivar">Bolívar</option>
+                                <option value="santander">Santander</option>
+                            </select>
+                            <div class="error-message" id="departamentoError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ciudad" class="required">Ciudad</label>
+                            <select id="ciudad" name="ciudad" required>
+                                <option value="">Seleccione...</option>
+                                <!-- Antioquia -->
+                                <option value="medellin">Medellín</option>
+                                <option value="bello">Bello</option>
+                                <option value="itagui">Itagüí</option>
+                                <!-- Cundinamarca -->
+                                <option value="bogota">Bogotá</option>
+                                <option value="soacha">Soacha</option>
+                                <option value="chia">Chía</option>
+                                <!-- Valle -->
+                                <option value="cali">Cali</option>
+                                <option value="yumbo">Yumbo</option>
+                                <option value="palmira">Palmira</option>
+                                <!-- Atlántico -->
+                                <option value="barranquilla">Barranquilla</option>
+                                <option value="soledad">Soledad</option>
+                                <option value="malambo">Malambo</option>
+                                <!-- Bolívar -->
+                                <option value="cartagena">Cartagena</option>
+                                <option value="turbaco">Turbaco</option>
+                                <option value="arjona">Arjona</option>
+                                <!-- Santander -->
+                                <option value="bucaramanga">Bucaramanga</option>
+                                <option value="giron">Girón</option>
+                                <option value="piedecuesta">Piedecuesta</option>
+                            </select>
+                            <div class="error-message" id="ciudadError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="municipio" class="required">Municipio</label>
+                            <select id="municipio" name="municipio" required>
+                                <option value="">Seleccione...</option>
+                                <!-- Antioquia -->
+                                <option value="envigado">Envigado</option>
+                                <option value="rionegro">Rionegro</option>
+                                <option value="copacabana">Copacabana</option>
+                                <!-- Cundinamarca -->
+                                <option value="fusagasuga">Fusagasugá</option>
+                                <option value="zipaquira">Zipaquirá</option>
+                                <option value="facatativa">Facatativá</option>
+                                <!-- Valle -->
+                                <option value="tulua">Tuluá</option>
+                                <option value="buenaventura">Buenaventura</option>
+                                <option value="jamundi">Jamundí</option>
+                                <!-- Atlántico -->
+                                <option value="sabanalarga">Sabanalarga</option>
+                                <option value="baranoa">Baranoa</option>
+                                <option value="galapa">Galapa</option>
+                                <!-- Bolívar -->
+                                <option value="magangue">Magangué</option>
+                                <option value="mompox">Mompox</option>
+                                <option value="carmen-de-bolivar">
+                                    El Carmen de Bolívar
+                                </option>
+                                <!-- Santander -->
+                                <option value="floridablanca">Floridablanca</option>
+                                <option value="san-gil">San Gil</option>
+                                <option value="barichara">Barichara</option>
+                            </select>
+                            <div class="error-message" id="municipioError">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion">Dirección Completa</label>
+                        <textarea
+                            id="direccion"
+                            name="direccion"
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="contacto">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="cuenta" id="nextDireccion">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información de Cuenta -->
+                <div class="form-section" id="cuenta">
+                    <h2 class="section-title">
+                        <i class="fas fa-key"></i> Información de Cuenta
+                    </h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="rol" class="required">Rol de Usuario</label>
+                            <select id="rol" name="rol" required>
+                                <option value="">Seleccione...</option>
+                                <option value="cliente">Cliente</option>
+                                <option value="empleado">Empleado</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                            <div class="error-message" id="rolError">Este campo es obligatorio</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contrasena" class="required">Contraseña</label>
+                            <div class="password-container">
+                                <input
+                                    type="password"
+                                    id="contrasena"
+                                    name="contrasena"
+                                    required
+                                    minlength="8"
+                                />
+                                <span
+                                    class="toggle-password"
+                                    onclick="togglePassword('contrasena')"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <p class="form-note">
+                                Mínimo 8 caracteres, incluyendo mayúsculas, minúsculas y
+                                números
+                            </p>
+                            <div class="error-message" id="contrasenaError">La contraseña debe tener al menos 8 caracteres</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmarContrasena" class="required">Confirmar Contraseña</label>
+                            <div class="password-container">
+                                <input
+                                    type="password"
+                                    id="confirmarContrasena"
+                                    name="confirmarContrasena"
+                                    required
+                                />
+                                <span
+                                    class="toggle-password"
+                                    onclick="togglePassword('confirmarContrasena')"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                            <div class="error-message" id="confirmarContrasenaError">Este campo es obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="direccion">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="laboral" id="nextCuenta">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información Laboral -->
+                <div class="form-section" id="laboral">
+                    <h2 class="section-title">
+                        <i class="fas fa-briefcase"></i> Información Laboral
+                    </h2>
+
+                    <div class="optional-info">
+                        <h3>Cuéntanos sobre tu experiencia profesional</h3>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="empresa">Empresa</label>
+                                <input
+                                    type="text"
+                                    id="empresa"
+                                    name="empresa"
+                                    placeholder="Nombre de la empresa"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cargo">Cargo</label>
+                                <input
+                                    type="text"
+                                    id="cargo"
+                                    name="cargo"
+                                    placeholder="Ej: Desarrollador, Analista"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="area">Área</label>
+                                <select id="area" name="area">
+                                    <option value="">Seleccione...</option>
+                                    <option value="tecnologia">Tecnología</option>
+                                    <option value="administracion">Administración</option>
+                                    <option value="ventas">Ventas</option>
+                                    <option value="finanzas">Finanzas</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="experiencia">Años de Experiencia</label>
+                                <select id="experiencia" name="experiencia">
+                                    <option value="">Seleccione...</option>
+                                    <option value="menos1">Menos de 1 año</option>
+                                    <option value="1-3">1 a 3 años</option>
+                                    <option value="3-5">3 a 5 años</option>
+                                    <option value="5mas">Más de 5 años</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="cuenta">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="btn btn-next" data-next="academica" id="nextLaboral">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información Académica -->
+                <div class="form-section" id="academica">
+                    <h2 class="section-title">
+                        <i class="fas fa-graduation-cap"></i> Información Académica
+                    </h2>
+
+                    <div class="optional-info">
+                        <h3>Detalles de tu formación</h3>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nivelEducativo">Nivel Educativo</label>
+                                <select id="nivelEducativo" name="nivelEducativo">
+                                    <option value="">Seleccione...</option>
+                                    <option value="bachillerato">Bachillerato</option>
+                                    <option value="tecnico">Técnico</option>
+                                    <option value="tecnologo">Tecnólogo</option>
+                                    <option value="universitario">Universitario</option>
+                                    <option value="postgrado">Postgrado</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="institucion">Institución</label>
+                                <input
+                                    type="text"
+                                    id="institucion"
+                                    name="institucion"
+                                    placeholder="Nombre de la institución"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="areaEstudio">Área de Estudio</label>
+                                <select id="areaEstudio" name="areaEstudio">
+                                    <option value="">Seleccione...</option>
+                                    <option value="ingenieria">Ingeniería</option>
+                                    <option value="salud">Ciencias de la Salud</option>
+                                    <option value="humanidades">Humanidades</option>
+                                    <option value="administracion">Administración</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estadoAcademico">Estado Académico</label>
+                                <select id="estadoAcademico" name="estadoAcademico">
+                                    <option value="">Seleccione...</option>
+                                    <option value="cursando">Cursando</option>
+                                    <option value="finalizado">Finalizado</option>
+                                    <option value="incompleto">Incompleto</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button type="button" class="btn btn-secondary btn-prev" data-prev="laboral">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="submit" class="btn" id="submitForm">
+                            Crear Cuenta
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
