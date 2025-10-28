@@ -1,261 +1,216 @@
- document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("registrationForm");
-            const formSections = document.querySelectorAll('.form-section');
-            const navItems = document.querySelectorAll('.nav-item');
-            const progressBar = document.getElementById('formProgress');
-            const progressText = document.getElementById('progressText');
-            
-            // Manejar la funcionalidad de "No tengo segundo nombre"
-            const noSegundoNombre = document.getElementById("noSegundoNombre");
-            const segundoNombre = document.getElementById("segundoNombre");
+// =====================================================
+// 🔒 Mostrar / Ocultar contraseña
+// =====================================================
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    const icon = input.nextElementSibling.querySelector("i");
 
-            noSegundoNombre.addEventListener("change", function () {
-                if (this.checked) {
-                    segundoNombre.disabled = true;
-                    segundoNombre.value = "";
-                } else {
-                    segundoNombre.disabled = false;
-                }
-            });
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
 
-            // Manejar la funcionalidad de "No tengo segundo apellido"
-            const noSegundoApellido = document.getElementById("noSegundoApellido");
-            const segundoApellido = document.getElementById("segundoApellido");
+// =====================================================
+// 🗓️ Función para formatear fecha al formato dd/MM/yyyy
+// =====================================================
+function formatearFecha(fechaISO) {
+    if (!fechaISO) return "";
+    const [yyyy, mm, dd] = fechaISO.split("-");
+    return `${dd}/${mm}/${yyyy}`;
+}
 
-            noSegundoApellido.addEventListener("change", function () {
-                if (this.checked) {
-                    segundoApellido.disabled = true;
-                    segundoApellido.value = "";
-                } else {
-                    segundoApellido.disabled = false;
-                }
-            });
+// =====================================================
+// 🧭 Evento principal al cargar el documento
+// =====================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const rolSelect = document.getElementById("rol");
+    const codigoRolGroup = document.getElementById("codigoRolGroup");
+    const submitBtn = document.getElementById("submitBtn");
+    const form = document.getElementById("basicForm");
 
-            // Navegación por pestañas
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    
-                    // Actualizar pestañas activas
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Mostrar sección correspondiente
-                    formSections.forEach(section => {
-                        section.classList.remove('active');
-                        if (section.id === targetId) {
-                            section.classList.add('active');
-                            updateProgress();
-                        }
-                    });
-                });
-            });
+    // 🎭 Mostrar u ocultar campo de código según el rol
+    rolSelect.addEventListener("change", () => {
+        const rol = rolSelect.value;
 
-            // Navegación con botones Siguiente/Anterior
-            const nextButtons = document.querySelectorAll('.btn-next');
-            const prevButtons = document.querySelectorAll('.btn-prev');
-            
-            nextButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const currentSection = this.closest('.form-section');
-                    const nextSectionId = this.getAttribute('data-next');
-                    
-                    // Validar la sección actual antes de avanzar
-                    if (validateSection(currentSection.id)) {
-                        // Actualizar pestañas activas
-                        navItems.forEach(nav => nav.classList.remove('active'));
-                        document.querySelector(`.nav-item[data-target="${nextSectionId}"]`).classList.add('active');
-                        
-                        // Marcar la sección actual como completada
-                        document.querySelector(`.nav-item[data-target="${currentSection.id}"]`).classList.add('completed');
-                        
-                        // Mostrar siguiente sección
-                        formSections.forEach(section => {
-                            section.classList.remove('active');
-                            if (section.id === nextSectionId) {
-                                section.classList.add('active');
-                                updateProgress();
-                            }
-                        });
-                    }
-                });
-            });
-            
-            prevButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const prevSectionId = this.getAttribute('data-prev');
-                    
-                    // Actualizar pestañas activas
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    document.querySelector(`.nav-item[data-target="${prevSectionId}"]`).classList.add('active');
-                    
-                    // Mostrar sección anterior
-                    formSections.forEach(section => {
-                        section.classList.remove('active');
-                        if (section.id === prevSectionId) {
-                            section.classList.add('active');
-                            updateProgress();
-                        }
-                    });
-                });
-            });
-
-            // Actualizar barra de progreso
-            function updateProgress() {
-                const activeSection = document.querySelector('.form-section.active');
-                const sectionId = activeSection.id;
-                const totalSections = formSections.length;
-                let currentSectionIndex = 0;
-                
-                // Encontrar el índice de la sección actual
-                formSections.forEach((section, index) => {
-                    if (section.id === sectionId) {
-                        currentSectionIndex = index + 1;
-                    }
-                });
-                
-                // Calcular el porcentaje de progreso
-                const progressPercentage = (currentSectionIndex / totalSections) * 100;
-                progressBar.style.width = `${progressPercentage}%`;
-                progressText.textContent = `Paso ${currentSectionIndex} de ${totalSections}`;
-            }
-
-            // Validar sección específica
-            function validateSection(sectionId) {
-                const section = document.getElementById(sectionId);
-                const requiredInputs = section.querySelectorAll('input[required], select[required]');
-                let isValid = true;
-                
-                // Limpiar errores previos
-                section.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
-                section.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-                
-                // Validar cada campo requerido
-                requiredInputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        isValid = false;
-                        input.classList.add('error');
-                        const errorId = input.id + 'Error';
-                        const errorElement = document.getElementById(errorId);
-                        if (errorElement) {
-                            errorElement.style.display = 'block';
-                        }
-                    }
-                });
-                
-                // Validaciones específicas por sección
-                if (sectionId === 'contacto') {
-                    const email = document.getElementById('email');
-                    const confirmEmail = document.getElementById('confirmEmail');
-                    const telefono = document.getElementById('telefono');
-                    
-                    // Validar formato de teléfono si se proporciona
-                    if (telefono.value && !telefono.validity.valid) {
-                        isValid = false;
-                        telefono.classList.add('error');
-                        document.getElementById('telefonoError').style.display = 'block';
-                    }
-                    
-                    // Validar que los correos coincidan
-                    if (email.value !== confirmEmail.value) {
-                        isValid = false;
-                        email.classList.add('error');
-                        confirmEmail.classList.add('error');
-                        document.getElementById('emailError').textContent = 'Los correos electrónicos no coinciden';
-                        document.getElementById('emailError').style.display = 'block';
-                        document.getElementById('confirmEmailError').textContent = 'Los correos electrónicos no coinciden';
-                        document.getElementById('confirmEmailError').style.display = 'block';
-                    }
-                }
-                
-                if (sectionId === 'cuenta') {
-                    const contrasena = document.getElementById('contrasena');
-                    const confirmarContrasena = document.getElementById('confirmarContrasena');
-                    
-                    // Validar que las contraseñas coincidan
-                    if (contrasena.value !== confirmarContrasena.value) {
-                        isValid = false;
-                        contrasena.classList.add('error');
-                        confirmarContrasena.classList.add('error');
-                        document.getElementById('contrasenaError').textContent = 'Las contraseñas no coinciden';
-                        document.getElementById('contrasenaError').style.display = 'block';
-                        document.getElementById('confirmarContrasenaError').textContent = 'Las contraseñas no coinciden';
-                        document.getElementById('confirmarContrasenaError').style.display = 'block';
-                    }
-                    
-                    // Validar fortaleza de la contraseña
-                    if (contrasena.value && !validarContrasena(contrasena.value)) {
-                        isValid = false;
-                        contrasena.classList.add('error');
-                        document.getElementById('contrasenaError').textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números';
-                        document.getElementById('contrasenaError').style.display = 'block';
-                    }
-                }
-                
-                return isValid;
-            }
-
-            // Función para validar contraseña
-            function validarContrasena(contrasena) {
-                const tieneLongitudMinima = contrasena.length >= 8;
-                const tieneMayuscula = /[A-Z]/.test(contrasena);
-                const tieneMinuscula = /[a-z]/.test(contrasena);
-                const tieneNumero = /[0-9]/.test(contrasena);
-
-                return (
-                    tieneLongitudMinima &&
-                    tieneMayuscula &&
-                    tieneMinuscula &&
-                    tieneNumero
-                );
-            }
-
-            // Validación del formulario completo
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-                
-                // Validar todas las secciones
-                let allSectionsValid = true;
-                formSections.forEach(section => {
-                    if (!validateSection(section.id)) {
-                        allSectionsValid = false;
-                    }
-                });
-                
-                if (allSectionsValid) {
-                    // Si todo está bien, se puede enviar el formulario
-                    alert(
-                        "Formulario enviado con éxito. Su cuenta será activada después de la verificación."
-                    );
-                    form.reset();
-                    
-                    // Resetear la interfaz
-                    formSections.forEach(section => section.classList.remove('active'));
-                    document.getElementById('personal').classList.add('active');
-                    navItems.forEach(nav => nav.classList.remove('active', 'completed'));
-                    document.querySelector('.nav-item[data-target="personal"]').classList.add('active');
-                    updateProgress();
-                } else {
-                    alert("Por favor, complete todos los campos requeridos antes de enviar el formulario.");
-                }
-            });
-
-            // Inicializar la barra de progreso
-            updateProgress();
-        });
-
-        // Función para mostrar/ocultar contraseña
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = input.nextElementSibling.querySelector("i");
-
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            }
+        if (rol && rol !== "Usuario") {
+            codigoRolGroup.style.display = "block";
+            submitBtn.textContent = "Guardar y continuar";
+        } else {
+            codigoRolGroup.style.display = "none";
+            document.getElementById("codigoRol").value = "";
+            submitBtn.textContent = "Registrar";
         }
+    });
+
+    // 📨 Validar y enviar formulario
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = form.email.value.trim();
+        const confirmEmail = form.confirmEmail.value.trim();
+        const password = form.contrasena.value.trim();
+        const confirmPassword = form.confirmarContrasena.value.trim();
+        const rol = form.rol.value.trim();
+
+        // Validaciones básicas
+        if (email !== confirmEmail) {
+            Swal.fire({
+                icon: "error",
+                title: "Correos no coinciden",
+                text: "Por favor verifica los correos electrónicos.",
+                confirmButtonColor: "#d33"
+            });
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: "error",
+                title: "Contraseñas no coinciden",
+                text: "Por favor asegúrate de que ambas contraseñas sean iguales.",
+                confirmButtonColor: "#d33"
+            });
+            return;
+        }
+
+        if (rol !== "Usuario" && !form.codigoRol.value.trim()) {
+            Swal.fire({
+                icon: "warning",
+                title: "Falta código de rol",
+                text: "Debes ingresar el código de autorización para continuar.",
+                confirmButtonColor: "#f39c12"
+            });
+            return;
+        }
+
+        // 🧾 Crear cuerpo base
+        const dataUsuario = {
+            primerNombre: form.primerNombre.value,
+            segundoNombre: form.segundoNombre.value,
+            primerApellido: form.primerApellido.value,
+            segundoApellido: form.segundoApellido.value,
+            telefono: form.telefono.value,
+            email,
+            tipoIdentificacion: form.tipoIdentificacion.value,
+            numeroDeIdentificacion: form.numeroIdentificacion.value,
+            rol,
+            pais: "colombia",
+            barrio: form.barrio.value,
+            departamento: form.departamento.value,
+            ciudad: form.ciudad.value,
+            municipio: form.municipio.value,
+            calle: form.calle.value,
+            tipoDireccion: form.tipoDireccion.value,
+            fechaNacimiento: formatearFecha(form.fechaNacimiento.value),
+            contraseña: password,
+            genero: form.genero.value,
+            sexo: form.sexo.value
+        };
+
+        // Añadir código de rol si aplica
+        if (rol !== "Usuario") {
+            dataUsuario.codigoRol = form.codigoRol.value.trim();
+        }
+
+        // 🌐 Seleccionar endpoint y cuerpo
+        let endpoint;
+        let data;
+
+        if (rol === "Usuario") {
+            endpoint = "http://localhost:8080/login/registro/usuario/basico";
+            data = dataUsuario;
+        } else {
+            endpoint = "http://localhost:8080/login/registro/usuario/empleado";
+            data = { usuarioBasicoDto: dataUsuario };
+        }
+
+        console.log("📤 Enviando datos a:", endpoint);
+        console.log("🧾 Contenido:", data);
+
+        // 🚀 Enviar datos al servidor
+        try {
+            Swal.fire({
+                title: "Procesando...",
+                text: "Por favor espera mientras registramos tus datos.",
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const status = response.status;
+            const datos = await response.json();
+
+            Swal.close();
+
+            // 💬 Manejar respuestas
+            if (status >= 200 && status < 300) {
+                if (rol === "Usuario") {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Registro exitoso 🎉",
+                        text: datos.message || "El usuario ha sido creado correctamente.",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    form.reset();
+                    codigoRolGroup.style.display = "none";
+                    submitBtn.textContent = "Registrar";
+                    window.location.href = "/Login/index.html";
+                } else {
+                    await Swal.fire({
+                        icon: "success",
+                        title: "Empleado registrado correctamente 🎉",
+                        text: "Datos enviados exitosamente.",
+                        confirmButtonColor: "#3085d6"
+                    });
+                    window.location.href = "datosEducativos.html";
+                }
+            } else if (status >= 400 && status < 500) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error en los datos enviados",
+                    text: datos.Error || "Verifica los campos del formulario.",
+                    confirmButtonColor: "#d33"
+                });
+            } else if (status >= 500) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error del servidor",
+                    text: "El servidor no pudo procesar la solicitud. Intenta más tarde.",
+                    confirmButtonColor: "#d33"
+                });
+            } else {
+                Swal.fire({
+                    icon: "info",
+                    title: "Respuesta desconocida",
+                    text: `Código de estado: ${status}`,
+                    confirmButtonColor: "#3085d6"
+                });
+            }
+
+        } catch (error) {
+            console.error("Error en la conexión:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Fallo de conexión",
+                text: "No se pudo conectar con el servidor. Verifica tu red o intenta más tarde.",
+                confirmButtonColor: "#d33"
+            });
+        }
+    });
+});
+
+const user = JSON.parse(localStorage.getItem("usuario"));
+
+
+console.log(user.credenciales);
+
+
